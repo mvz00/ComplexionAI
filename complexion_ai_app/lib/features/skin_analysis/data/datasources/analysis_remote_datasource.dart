@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/analysis_result_model.dart';
 
@@ -7,8 +8,12 @@ class AnalysisRemoteDataSource {
 
   Future<AnalysisResultModel> analyseImage(String imagePath, String userId) async {
     // Upload image to storage
-    final fileName = '${userId}/${DateTime.now().millisecondsSinceEpoch}.jpg';
-    await _supabase.storage.from('skin-images').upload(fileName, Uri.parse(imagePath).toFilePath() as dynamic);
+    final fileName = '$userId/${DateTime.now().millisecondsSinceEpoch}.jpg';
+    final file = File(imagePath);
+    await _supabase.storage
+        .from('skin-images')
+        .upload(fileName, file,
+            fileOptions: const FileOptions(contentType: 'image/jpeg'));
 
     // Call edge function
     final response = await _supabase.functions.invoke('analyse-skin', body: {
@@ -25,7 +30,9 @@ class AnalysisRemoteDataSource {
         .select()
         .eq('user_id', userId)
         .order('analysed_at', ascending: false);
-    return (data as List).map((e) => AnalysisResultModel.fromJson(e)).toList();
+    return (data as List)
+        .map((e) => AnalysisResultModel.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   Future<AnalysisResultModel?> getLatestAnalysis(String userId) async {

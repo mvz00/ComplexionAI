@@ -13,7 +13,7 @@ class AuthRemoteDataSource {
   Future<UserModel?> getCurrentUser() async {
     final authUser = _supabase.auth.currentUser;
     if (authUser == null) return null;
-    return _fetchUserProfile(authUser.id);
+    return _buildUserModelFromAuthUser(authUser);
   }
 
   Future<UserModel> signInWithEmail(String email, String password) async {
@@ -21,7 +21,9 @@ class AuthRemoteDataSource {
       email: email,
       password: password,
     );
-    return _fetchUserProfile(response.user!.id);
+    final user = response.user;
+    if (user == null) throw Exception('Sign-in failed: no user returned');
+    return _buildUserModelFromAuthUser(user);
   }
 
   Future<UserModel> signUpWithEmail(String email, String password) async {
@@ -29,7 +31,9 @@ class AuthRemoteDataSource {
       email: email,
       password: password,
     );
-    return _fetchUserProfile(response.user!.id);
+    final user = response.user;
+    if (user == null) throw Exception('Sign-up failed: no user returned');
+    return _buildUserModelFromAuthUser(user);
   }
 
   Future<UserModel> signInWithGoogle() async {
@@ -37,14 +41,14 @@ class AuthRemoteDataSource {
     // After OAuth redirect, user will be available
     final user = _supabase.auth.currentUser;
     if (user == null) throw Exception('Google sign-in failed');
-    return _fetchUserProfile(user.id);
+    return _buildUserModelFromAuthUser(user);
   }
 
   Future<UserModel> signInWithApple() async {
     await _supabase.auth.signInWithOAuth(OAuthProvider.apple);
     final user = _supabase.auth.currentUser;
     if (user == null) throw Exception('Apple sign-in failed');
-    return _fetchUserProfile(user.id);
+    return _buildUserModelFromAuthUser(user);
   }
 
   Future<void> signOut() async {
@@ -55,12 +59,21 @@ class AuthRemoteDataSource {
     await _supabase.auth.resetPasswordForEmail(email);
   }
 
-  Future<UserModel> _fetchUserProfile(String userId) async {
-    final data = await _supabase
-        .from('users')
-        .select()
-        .eq('id', userId)
-        .single();
-    return UserModel.fromJson(data);
+  /// Builds a [UserModel] directly from the Supabase auth [User] object,
+  /// without querying the `users` table (which may not have a row yet for
+  /// newly-signed-up users). Optionally enriches with profile data if available.
+  UserModel _buildUserModelFromAuthUser(User user) {
+    final meta = user.userMetadata ?? {};
+    return UserModel(
+      id: user.id,
+      email: user.email ?? '',
+      displayName: meta['display_name'] as String? ??
+          meta['full_name'] as String? ??
+          meta['name'] as String?,
+      avatarUrl: meta['avatar_url'] as String?,
+      subscriptionTier: 'free',
+      subscriptionExpiresAt: null,
+      createdAt: DateTime.parse(user.createdAt),
+    );
   }
 }

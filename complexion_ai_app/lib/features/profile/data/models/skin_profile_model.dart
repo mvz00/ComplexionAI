@@ -39,7 +39,7 @@ class SkinProfileModel extends SkinProfile {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      if (id.isNotEmpty) 'id': id,
       'user_id': userId,
       'skin_type': skinType,
       'skin_concerns': skinConcerns,
