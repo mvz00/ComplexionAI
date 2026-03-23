@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/user_model.dart';
 
@@ -6,7 +5,7 @@ class AuthRemoteDataSource {
   final SupabaseClient _supabase;
 
   AuthRemoteDataSource(this._supabase) {
-    debugPrint('[Auth] DataSource created.');
+    print('[Auth] DataSource created.');
   }
 
   Stream<AuthState> get authStateChanges => _supabase.auth.onAuthStateChange;
@@ -15,41 +14,41 @@ class AuthRemoteDataSource {
 
   Future<UserModel?> getCurrentUser() async {
     final authUser = _supabase.auth.currentUser;
-    debugPrint('[Auth] getCurrentUser → ${authUser?.id ?? 'null'}');
+    print('[Auth] getCurrentUser → ${authUser?.id ?? 'null'}');
     if (authUser == null) return null;
     return _buildUserModelFromAuthUser(authUser);
   }
 
   Future<UserModel> signInWithEmail(String email, String password) async {
-    debugPrint('[Auth] signInWithEmail → $email');
+    print('[Auth] signInWithEmail → $email');
     try {
       final response = await _supabase.auth.signInWithPassword(
         email: email,
         password: password,
       );
-      debugPrint('[Auth] signIn response user: ${response.user?.id}');
+      print('[Auth] signIn response user: ${response.user?.id}');
       final user = response.user;
       if (user == null) throw Exception('Sign-in failed: no user returned');
       return _buildUserModelFromAuthUser(user);
     } catch (e) {
-      debugPrint('[Auth] signInWithEmail ERROR: $e');
+      print('[Auth] signInWithEmail ERROR: $e');
       rethrow;
     }
   }
 
   Future<UserModel> signUpWithEmail(String email, String password) async {
-    debugPrint('[Auth] signUpWithEmail → $email');
+    print('[Auth] signUpWithEmail → $email');
     try {
       final response = await _supabase.auth.signUp(
         email: email,
         password: password,
       );
-      debugPrint('[Auth] signUp response user: ${response.user?.id}, session: ${response.session?.accessToken != null}');
+      print('[Auth] signUp response user: ${response.user?.id}, session: ${response.session?.accessToken != null}');
       final user = response.user;
       if (user == null) throw Exception('Sign-up failed: no user returned');
       return _buildUserModelFromAuthUser(user);
     } catch (e) {
-      debugPrint('[Auth] signUpWithEmail ERROR: $e');
+      print('[Auth] signUpWithEmail ERROR: $e');
       rethrow;
     }
   }
@@ -69,7 +68,7 @@ class AuthRemoteDataSource {
   }
 
   Future<void> signOut() async {
-    debugPrint('[Auth] signOut');
+    print('[Auth] signOut');
     await _supabase.auth.signOut();
   }
 
@@ -78,7 +77,7 @@ class AuthRemoteDataSource {
   }
 
   UserModel _buildUserModelFromAuthUser(User user) {
-    debugPrint('[Auth] Building UserModel for id=${user.id} email=${user.email}');
+    print('[Auth] Building UserModel for id=${user.id} email=${user.email}');
     final meta = user.userMetadata ?? {};
     return UserModel(
       id: user.id,

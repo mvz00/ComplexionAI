@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../app/router.dart';
+import '../../../../main.dart' show kBuildStamp;
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
@@ -94,6 +95,11 @@ class _RegisterViewState extends State<_RegisterView> {
                       Text(
                         'Start your personalised skincare journey',
                         style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        kBuildStamp,
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(color: Colors.grey),
                       ),
                       const SizedBox(height: 32),
                       // Email
