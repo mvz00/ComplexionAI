@@ -11,7 +11,10 @@ RUN flutter build web --release
 FROM nginx:alpine
 
 COPY --from=build /app/build/web /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/templates/default.conf.template
+
+# Railway sets PORT env var — nginx:alpine auto-substitutes ${PORT} in templates
+ENV PORT=8080
 
 EXPOSE 8080
 
