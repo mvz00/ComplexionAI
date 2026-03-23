@@ -98,7 +98,7 @@ class _RoutineOverviewView extends StatelessWidget {
                           child: Container(
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
-                              color: Colors.red.shade900.withOpacity(0.3),
+                              color: Colors.red.shade900.withAlpha(77),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Text(

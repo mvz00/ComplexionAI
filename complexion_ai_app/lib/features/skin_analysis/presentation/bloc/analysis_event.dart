@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'package:equatable/equatable.dart';
 
 abstract class AnalysisEvent extends Equatable {
@@ -7,11 +8,11 @@ abstract class AnalysisEvent extends Equatable {
 }
 
 class AnalysisCaptureRequested extends AnalysisEvent {
-  final String imagePath;
+  final Uint8List imageBytes;
   final String userId;
-  const AnalysisCaptureRequested({required this.imagePath, required this.userId});
+  const AnalysisCaptureRequested({required this.imageBytes, required this.userId});
   @override
-  List<Object?> get props => [imagePath, userId];
+  List<Object?> get props => [imageBytes, userId];
 }
 
 class AnalysisHistoryRequested extends AnalysisEvent {

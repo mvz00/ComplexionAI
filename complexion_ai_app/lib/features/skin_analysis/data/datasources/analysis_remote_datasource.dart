@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/analysis_result_model.dart';
 
@@ -6,14 +6,20 @@ class AnalysisRemoteDataSource {
   final SupabaseClient _supabase;
   AnalysisRemoteDataSource(this._supabase);
 
-  Future<AnalysisResultModel> analyseImage(String imagePath, String userId) async {
-    // Upload image to storage
+  /// Uploads image bytes directly (web-compatible — no dart:io File).
+  Future<AnalysisResultModel> analyseImage(
+    Uint8List imageBytes,
+    String userId,
+  ) async {
+    // Upload image bytes to storage
     final fileName = '$userId/${DateTime.now().millisecondsSinceEpoch}.jpg';
-    final file = File(imagePath);
     await _supabase.storage
         .from('skin-images')
-        .upload(fileName, file,
-            fileOptions: const FileOptions(contentType: 'image/jpeg'));
+        .uploadBinary(
+          fileName,
+          imageBytes,
+          fileOptions: const FileOptions(contentType: 'image/jpeg'),
+        );
 
     // Call edge function
     final response = await _supabase.functions.invoke('analyse-skin', body: {

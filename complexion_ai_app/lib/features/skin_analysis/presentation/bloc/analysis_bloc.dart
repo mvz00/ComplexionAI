@@ -24,7 +24,7 @@ class AnalysisBloc extends Bloc<AnalysisEvent, AnalysisState> {
   ) async {
     emit(AnalysisProcessing());
     try {
-      final result = await _captureAndAnalyse(event.imagePath, event.userId);
+      final result = await _captureAndAnalyse(event.imageBytes, event.userId);
       emit(AnalysisComplete(result));
     } catch (e) {
       emit(AnalysisError(e.toString()));

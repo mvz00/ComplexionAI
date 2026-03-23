@@ -6,7 +6,14 @@ class CheckinRemoteDataSource {
   CheckinRemoteDataSource(this._supabase);
 
   Future<CheckinModel> submitCheckin(Map<String, dynamic> data) async {
-    final result = await _supabase.from('daily_checkins').upsert(data).select().single();
+    // Use upsert on (user_id, checkin_date) to handle same-day re-submissions.
+    // The id is not included in data so Supabase will generate it on insert,
+    // and update existing fields on conflict with the unique constraint.
+    final result = await _supabase
+        .from('daily_checkins')
+        .upsert(data, onConflict: 'user_id,checkin_date')
+        .select()
+        .single();
     return CheckinModel.fromJson(result);
   }
 

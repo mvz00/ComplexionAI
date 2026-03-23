@@ -34,7 +34,6 @@ class _CameraCaptureViewState extends State<_CameraCaptureView> {
   final _picker = ImagePicker();
   bool _isPicking = false;
   Uint8List? _previewBytes;
-  String? _imagePath;
 
   Future<void> _pickImage(ImageSource source) async {
     setState(() => _isPicking = true);
@@ -51,11 +50,11 @@ class _CameraCaptureViewState extends State<_CameraCaptureView> {
         setState(() => _isPicking = false);
         return;
       }
+      // Use readAsBytes() — works on both web and mobile
       final bytes = await file.readAsBytes();
       if (!mounted) return;
       setState(() {
         _previewBytes = bytes;
-        _imagePath = file.path;
         _isPicking = false;
       });
     } catch (e) {
@@ -68,11 +67,11 @@ class _CameraCaptureViewState extends State<_CameraCaptureView> {
   }
 
   void _submitAnalysis() {
-    final path = _imagePath;
-    if (path == null) return;
+    final bytes = _previewBytes;
+    if (bytes == null) return;
     final userId = Supabase.instance.client.auth.currentUser?.id ?? '';
     context.read<AnalysisBloc>().add(
-          AnalysisCaptureRequested(imagePath: path, userId: userId),
+          AnalysisCaptureRequested(imageBytes: bytes, userId: userId),
         );
   }
 
@@ -210,7 +209,6 @@ class _CameraCaptureViewState extends State<_CameraCaptureView> {
                                       ? null
                                       : () => setState(() {
                                             _previewBytes = null;
-                                            _imagePath = null;
                                           }),
                                   icon: const Icon(Icons.refresh, size: 18),
                                   label: const Text('Retake'),

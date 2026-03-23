@@ -45,12 +45,10 @@ class CheckinBloc extends Bloc<CheckinEvent, CheckinState> {
   Future<void> _onLoad(CheckinLoadRequested event, Emitter<CheckinState> emit) async {
     emit(state.copyWith(isLoading: true, error: null));
     try {
-      final results = await Future.wait([
-        _getCheckinStreak(event.userId),
-        _checkinRepository.getCheckins(event.userId),
-      ]);
-      final streak = results[0] as int;
-      final history = results[1] as List<Checkin>;
+      final streakFuture = _getCheckinStreak(event.userId);
+      final historyFuture = _checkinRepository.getCheckins(event.userId);
+      final streak = await streakFuture;
+      final history = await historyFuture;
       emit(state.copyWith(isLoading: false, streak: streak, history: history));
     } catch (e) {
       emit(state.copyWith(isLoading: false, error: e.toString()));
