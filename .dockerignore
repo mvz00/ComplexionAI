@@ -1,0 +1,15 @@
+.git
+*.md
+backend/
+**/.dart_tool
+**/build
+**/.idea
+**/.vscode
+**/*.iml
+**/.env
+**/android
+**/ios
+**/linux
+**/macos
+**/windows
+**/test
