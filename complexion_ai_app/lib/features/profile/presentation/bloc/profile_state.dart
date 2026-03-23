@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import '../../domain/entities/skin_profile.dart';
 
 class ProfileState extends Equatable {
   final String? skinType;
@@ -10,6 +11,7 @@ class ProfileState extends Equatable {
   final List<String> selectedGoals;
   final bool isLoading;
   final bool isSaved;
+  final SkinProfile? loadedProfile;
   final String? error;
 
   const ProfileState({
@@ -22,6 +24,7 @@ class ProfileState extends Equatable {
     this.selectedGoals = const [],
     this.isLoading = false,
     this.isSaved = false,
+    this.loadedProfile,
     this.error,
   });
 
@@ -35,6 +38,7 @@ class ProfileState extends Equatable {
     List<String>? selectedGoals,
     bool? isLoading,
     bool? isSaved,
+    SkinProfile? loadedProfile,
     String? error,
   }) {
     return ProfileState(
@@ -47,10 +51,23 @@ class ProfileState extends Equatable {
       selectedGoals: selectedGoals ?? this.selectedGoals,
       isLoading: isLoading ?? this.isLoading,
       isSaved: isSaved ?? this.isSaved,
+      loadedProfile: loadedProfile ?? this.loadedProfile,
       error: error,
     );
   }
 
   @override
-  List<Object?> get props => [skinType, selectedConcerns, ageRange, fitzpatrickScale, climate, allergies, selectedGoals, isLoading, isSaved, error];
+  List<Object?> get props => [
+        skinType,
+        selectedConcerns,
+        ageRange,
+        fitzpatrickScale,
+        climate,
+        allergies,
+        selectedGoals,
+        isLoading,
+        isSaved,
+        loadedProfile,
+        error,
+      ];
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../app/di.dart';
 import '../../../../core/theme/colors.dart';
 import '../bloc/chat_bloc.dart';
 import '../bloc/chat_event.dart';
@@ -41,7 +42,7 @@ class _AiChatPageState extends State<AiChatPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ChatBloc(),
+      create: (_) => getIt<ChatBloc>(),
       child: Builder(
         builder: (context) {
           return Scaffold(
@@ -78,6 +79,9 @@ class _AiChatPageState extends State<AiChatPage> {
                 Expanded(
                   child: BlocBuilder<ChatBloc, ChatState>(
                     builder: (context, state) {
+                      if (state.isLoadingHistory) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
                       if (state.messages.isEmpty) {
                         return Center(
                           child: Padding(
@@ -135,6 +139,23 @@ class _AiChatPageState extends State<AiChatPage> {
                       );
                     },
                   ),
+                ),
+                // Error bar
+                BlocBuilder<ChatBloc, ChatState>(
+                  buildWhen: (prev, curr) => prev.error != curr.error,
+                  builder: (context, state) {
+                    if (state.error != null) {
+                      return Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        color: AppColors.danger.withAlpha(30),
+                        child: Text(
+                          'Error: ${state.error}',
+                          style: TextStyle(color: AppColors.danger, fontSize: 12),
+                        ),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
                 ),
                 // Input bar
                 Container(

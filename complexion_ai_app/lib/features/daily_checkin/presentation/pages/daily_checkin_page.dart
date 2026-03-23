@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../app/di.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../app/router.dart';
@@ -14,17 +15,25 @@ class DailyCheckinPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => CheckinBloc(),
+      create: (_) => getIt<CheckinBloc>(),
       child: BlocListener<CheckinBloc, CheckinState>(
         listener: (context, state) {
+          if (state.error != null && !state.isSubmitting) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.error!), backgroundColor: AppColors.danger),
+            );
+          }
           if (state.isSubmitted) {
             showDialog(
               context: context,
+              barrierDismissible: false,
               builder: (_) => AlertDialog(
+                backgroundColor: const Color(0xFF1A1A2E),
                 title: const Text('Check-in complete!'),
-                content: state.aiTip != null
-                    ? Text(state.aiTip!, style: Theme.of(context).textTheme.bodySmall)
-                    : null,
+                content: const Text(
+                  'Great job staying consistent with your skin care journey.',
+                  style: TextStyle(fontSize: 14),
+                ),
                 actions: [
                   TextButton(
                     onPressed: () {

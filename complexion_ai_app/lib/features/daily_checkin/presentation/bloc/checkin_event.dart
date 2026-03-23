@@ -6,6 +6,13 @@ abstract class CheckinEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class CheckinLoadRequested extends CheckinEvent {
+  final String userId;
+  const CheckinLoadRequested(this.userId);
+  @override
+  List<Object?> get props => [userId];
+}
+
 class CheckinFeelingSelected extends CheckinEvent {
   final String feeling;
   const CheckinFeelingSelected(this.feeling);

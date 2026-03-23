@@ -8,6 +8,7 @@ import '../features/profile/presentation/pages/profile_page.dart';
 import '../features/profile/presentation/pages/settings_page.dart';
 import '../features/skin_analysis/presentation/pages/camera_capture_page.dart';
 import '../features/skin_analysis/presentation/pages/analysis_result_page.dart';
+import '../features/skin_analysis/domain/entities/analysis_result.dart';
 import '../features/skin_analysis/presentation/pages/analysis_history_page.dart';
 import '../features/routine/presentation/pages/routine_overview_page.dart';
 import '../features/routine/presentation/pages/routine_detail_page.dart';
@@ -96,7 +97,9 @@ final appRouter = GoRouter(
     // Detail routes (push on top of shell)
     GoRoute(
       path: Routes.analysisResult,
-      builder: (context, state) => const AnalysisResultPage(),
+      builder: (context, state) => AnalysisResultPage(
+        result: state.extra is AnalysisResult ? state.extra as AnalysisResult : null,
+      ),
     ),
     GoRoute(
       path: Routes.analysisHistory,

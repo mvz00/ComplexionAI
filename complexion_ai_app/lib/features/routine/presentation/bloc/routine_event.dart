@@ -27,3 +27,11 @@ class RoutineTabChanged extends RoutineEvent {
   @override
   List<Object?> get props => [routineType];
 }
+
+class RoutineRegenerateRequested extends RoutineEvent {
+  final String userId;
+  final String analysisId;
+  const RoutineRegenerateRequested({required this.userId, required this.analysisId});
+  @override
+  List<Object?> get props => [userId, analysisId];
+}

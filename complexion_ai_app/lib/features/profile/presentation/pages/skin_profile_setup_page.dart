@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../app/di.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../app/router.dart';
@@ -53,11 +54,16 @@ class _SkinProfileSetupPageState extends State<SkinProfileSetupPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ProfileBloc(),
+      create: (_) => getIt<ProfileBloc>(),
       child: BlocListener<ProfileBloc, ProfileState>(
         listener: (context, state) {
+          if (state.error != null && !state.isLoading) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.error!), backgroundColor: AppColors.danger),
+            );
+          }
           if (state.isSaved) {
-            context.go(Routes.scan);
+            context.go(Routes.home);
           }
         },
         child: Scaffold(
@@ -330,58 +336,70 @@ class _Step3FirstScan extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Face guide placeholder
-          Container(
-            width: 150,
-            height: 195,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(75),
-              border: Border.all(
-                color: AppColors.skinBorderStrong,
-                width: 2,
-                strokeAlign: BorderSide.strokeAlignCenter,
+    return BlocBuilder<ProfileBloc, ProfileState>(
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Face guide placeholder
+              Container(
+                width: 150,
+                height: 195,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(75),
+                  border: Border.all(
+                    color: AppColors.skinBorderStrong,
+                    width: 2,
+                    strokeAlign: BorderSide.strokeAlignCenter,
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    'Face preview',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ),
               ),
-            ),
-            child: Center(
-              child: Text(
-                'Face preview',
+              const SizedBox(height: 24),
+              Text(
+                "Let's take your first scan",
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                "We'll analyse your skin and build a personalised routine",
                 style: Theme.of(context).textTheme.bodySmall,
+                textAlign: TextAlign.center,
               ),
-            ),
+              const SizedBox(height: 32),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: state.isLoading
+                      ? null
+                      : () {
+                          context.read<ProfileBloc>().add(ProfileSaveRequested());
+                        },
+                  child: state.isLoading
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                        )
+                      : const Text('Open camera'),
+                ),
+              ),
+              const SizedBox(height: 12),
+              TextButton(
+                onPressed: state.isLoading ? null : () => context.go(Routes.home),
+                child: const Text('Skip for now'),
+              ),
+            ],
           ),
-          const SizedBox(height: 24),
-          Text(
-            "Let's take your first scan",
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            "We'll analyse your skin and build a personalised routine",
-            style: Theme.of(context).textTheme.bodySmall,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 32),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
-                context.read<ProfileBloc>().add(ProfileSaveRequested());
-              },
-              child: const Text('Open camera'),
-            ),
-          ),
-          const SizedBox(height: 12),
-          TextButton(
-            onPressed: () => context.go(Routes.home),
-            child: const Text('Skip for now'),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

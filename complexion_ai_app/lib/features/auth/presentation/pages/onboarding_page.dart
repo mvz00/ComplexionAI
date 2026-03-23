@@ -56,25 +56,25 @@ class OnboardingPage extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const Spacer(flex: 3),
-              // Get started button
+              // Get started button — goes to login
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () => context.go(Routes.register),
+                  onPressed: () => context.go(Routes.login),
                   child: const Text('Get started'),
                 ),
               ),
               const SizedBox(height: 16),
-              // Sign in link
+              // Sign up link
               GestureDetector(
-                onTap: () => context.go(Routes.login),
+                onTap: () => context.go(Routes.register),
                 child: RichText(
                   text: TextSpan(
                     style: Theme.of(context).textTheme.bodySmall,
                     children: const [
-                      TextSpan(text: 'Already have an account? '),
+                      TextSpan(text: "Don't have an account? "),
                       TextSpan(
-                        text: 'Sign in',
+                        text: 'Sign up',
                         style: TextStyle(
                           color: AppColors.info,
                           fontWeight: FontWeight.w500,
