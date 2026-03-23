@@ -6,7 +6,7 @@ class AuthRemoteDataSource {
   final SupabaseClient _supabase;
 
   AuthRemoteDataSource(this._supabase) {
-    debugPrint('[Auth] DataSource created. Supabase URL: ${_supabase.supabaseUrl}');
+    debugPrint('[Auth] DataSource created.');
   }
 
   Stream<AuthState> get authStateChanges => _supabase.auth.onAuthStateChange;
