@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ComplexionAI — App Wireframes</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Playfair+Display:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #FAF8F5;
+    --surface: #FFFFFF;
+    --surface-alt: #F3F1ED;
+    --text: #2D2D2D;
+    --text-secondary: #7A7A7A;
+    --text-tertiary: #ABABAB;
+    --border: rgba(0,0,0,0.1);
+    --border-strong: rgba(0,0,0,0.18);
+    --primary: #6B8F71;
+    --primary-light: #A8C5AD;
+    --primary-bg: #E8F0E9;
+    --accent: #E8B4A2;
+    --accent-light: #F5DDD3;
+    --accent-bg: #FDF5F1;
+    --info: #3B7DD8;
+    --info-bg: #E6F0FB;
+    --success: #4CAF50;
+    --success-bg: #EDF7ED;
+    --warning: #F59E0B;
+    --warning-bg: #FEF3C7;
+    --danger: #E24B4A;
+    --danger-bg: #FCEBEB;
+    --radius: 10px;
+    --radius-lg: 14px;
+    --font-body: 'DM Sans', -apple-system, sans-serif;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  [data-theme="dark"] {
+    --bg: #141413;
+    --surface: #1E1E1C;
+    --surface-alt: #2A2A27;
+    --text: #E8E6E1;
+    --text-secondary: #9A9890;
+    --text-tertiary: #6B6960;
+    --border: rgba(255,255,255,0.08);
+    --border-strong: rgba(255,255,255,0.15);
+    --primary: #8FB896;
+    --primary-light: #6B8F71;
+    --primary-bg: #1E2E20;
+    --accent: #D4967F;
+    --accent-light: #8B5E4A;
+    --accent-bg: #2E1F18;
+    --info: #6BA3E8;
+    --info-bg: #1A2A3E;
+    --success: #66BB6A;
+    --success-bg: #1A2E1A;
+    --warning: #FBBF24;
+    --warning-bg: #2E2510;
+    --danger: #EF6B6B;
+    --danger-bg: #2E1515;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* === Top Bar === */
+  .topbar {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    backdrop-filter: blur(12px);
+  }
+  .topbar-logo {
+    font-family: var(--font-display);
+    font-size: 20px; font-weight: 600;
+    color: var(--primary);
+    letter-spacing: -0.5px;
+  }
+  .topbar-logo span { color: var(--accent); }
+  .theme-toggle {
+    background: var(--surface-alt); border: 1px solid var(--border);
+    border-radius: 20px; padding: 6px 14px; cursor: pointer;
+    font-size: 12px; color: var(--text-secondary); font-family: var(--font-body);
+  }
+  .theme-toggle:hover { border-color: var(--border-strong); }
+
+  /* === Navigation Tabs === */
+  .nav-wrap {
+    padding: 16px 24px 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .nav-tabs {
+    display: flex; gap: 4px;
+    min-width: max-content;
+  }
+  .nav-tab {
+    padding: 8px 16px; border-radius: 8px 8px 0 0;
+    font-size: 13px; font-weight: 400;
+    color: var(--text-secondary);
+    cursor: pointer; border: none; background: transparent;
+    font-family: var(--font-body);
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+  .nav-tab:hover { background: var(--surface-alt); color: var(--text); }
+  .nav-tab.active {
+    background: var(--surface);
+    color: var(--primary); font-weight: 500;
+    border: 1px solid var(--border);
+    border-bottom: 1px solid var(--surface);
+    position: relative; top: 1px;
+  }
+
+  /* === Content Area === */
+  .content {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    min-height: calc(100vh - 120px);
+    padding: 32px 24px;
+  }
+  .screen { display: none; }
+  .screen.active { display: block; }
+  .screen-title {
+    font-family: var(--font-display);
+    font-size: 22px; font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .screen-subtitle {
+    font-size: 13px; color: var(--text-secondary);
+    margin-bottom: 24px;
+  }
+
+  /* === Phone Frames === */
+  .phone-grid {
+    display: flex; gap: 24px;
+    overflow-x: auto; padding-bottom: 8px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .phone-frame {
+    min-width: 280px; max-width: 280px;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  .phone-status {
+    padding: 6px 16px;
+    display: flex; justify-content: space-between;
+    font-size: 11px; font-weight: 500;
+    color: var(--text-secondary);
+    background: var(--surface-alt);
+  }
+  .phone-title-bar {
+    padding: 10px 16px;
+    font-size: 15px; font-weight: 500;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .phone-screen {
+    min-height: 420px;
+    padding: 16px;
+    position: relative;
+  }
+  .phone-label {
+    font-size: 11px; font-weight: 500;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  /* === Shared Components === */
+  .btn {
+    display: block; text-align: center;
+    padding: 10px 16px; border-radius: var(--radius);
+    font-size: 13px; font-weight: 500;
+    cursor: pointer; border: none;
+    font-family: var(--font-body);
+    transition: all 0.15s ease;
+  }
+  .btn-primary {
+    background: var(--primary); color: #fff;
+  }
+  .btn-primary:hover { filter: brightness(1.08); }
+  .btn-outline {
+    background: transparent; color: var(--text);
+    border: 1px solid var(--border-strong);
+  }
+  .btn-outline:hover { background: var(--surface-alt); }
+  .btn-accent {
+    background: var(--accent); color: #fff;
+  }
+
+  .chip {
+    display: inline-block;
+    padding: 5px 12px; border-radius: 20px;
+    font-size: 11px; border: 1px solid var(--border);
+    cursor: pointer; transition: all 0.12s ease;
+  }
+  .chip:hover { border-color: var(--primary); }
+  .chip.sel {
+    background: var(--primary-bg); color: var(--primary);
+    border-color: var(--primary);
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 9px; border-radius: 10px;
+    font-size: 10px; font-weight: 500;
+  }
+  .badge-primary { background: var(--primary-bg); color: var(--primary); }
+  .badge-accent { background: var(--accent-bg); color: var(--accent); }
+  .badge-info { background: var(--info-bg); color: var(--info); }
+  .badge-success { background: var(--success-bg); color: var(--success); }
+  .badge-warning { background: var(--warning-bg); color: var(--warning); }
+  .badge-neutral { background: var(--surface-alt); color: var(--text-secondary); }
+
+  .card {
+    background: var(--surface-alt);
+    border-radius: var(--radius);
+    padding: 12px;
+    margin-bottom: 10px;
+  }
+
+  .label { font-size: 11px; color: var(--text-secondary); margin-bottom: 4px; }
+  .value { font-size: 14px; font-weight: 500; }
+  .big-value { font-size: 28px; font-weight: 600; font-family: var(--font-display); }
+
+  .divider { border-top: 1px solid var(--border); margin: 12px 0; }
+
+  .avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--primary-bg); color: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 500; font-size: 14px; flex-shrink: 0;
+  }
+
+  /* === Score Ring === */
+  .score-ring {
+    width: 90px; height: 90px; border-radius: 50%;
+    border: 5px solid var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 12px;
+    position: relative;
+  }
+  .score-ring .big-value { font-size: 26px; }
+
+  /* === Progress Bar === */
+  .progress-track { height: 5px; background: var(--surface-alt); border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 3px; background: var(--primary); }
+
+  /* === Routine Step === */
+  .step-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .step-check {
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 2px solid var(--border-strong); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step-check.done {
+    background: var(--success-bg); border-color: var(--success);
+  }
+  .step-check.done::after {
+    content: ''; width: 6px; height: 10px;
+    border: solid var(--success); border-width: 0 2px 2px 0;
+    transform: rotate(45deg); margin-top: -2px;
+  }
+
+  /* === Chat Bubbles === */
+  .bubble {
+    padding: 10px 12px; border-radius: var(--radius);
+    font-size: 12px; line-height: 1.6;
+    margin-bottom: 8px; max-width: 88%;
+  }
+  .bubble-ai { background: var(--surface-alt); }
+  .bubble-user {
+    background: var(--primary-bg); color: var(--primary);
+    margin-left: auto;
+  }
+
+  /* === Emoji Selector === */
+  .emoji-row { display: flex; justify-content: space-between; gap: 4px; }
+  .emoji-circle {
+    width: 40px; height: 40px; border-radius: 50%;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; cursor: pointer; transition: all 0.12s;
+  }
+  .emoji-circle:hover { border-color: var(--primary); }
+  .emoji-circle.sel { border-color: var(--primary); background: var(--primary-bg); }
+
+  /* === Timeline === */
+  .tl-entry {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .tl-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    margin-top: 4px; flex-shrink: 0;
+  }
+
+  /* === Admin Sidebar === */
+  .admin-layout {
+    display: flex;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+    overflow: hidden; min-height: 520px;
+    background: var(--surface);
+  }
+  .admin-sidebar {
+    width: 210px; padding: 20px 12px;
+    border-right: 1px solid var(--border);
+    background: var(--surface-alt);
+    flex-shrink: 0;
+  }
+  .sidebar-logo {
+    font-family: var(--font-display);
+    font-size: 16px; font-weight: 600;
+    color: var(--primary); padding: 0 8px;
+    margin-bottom: 20px;
+  }
+  .sidebar-logo span { color: var(--accent); }
+  .sb-item {
+    padding: 7px 10px; border-radius: 6px;
+    font-size: 12px; color: var(--text-secondary);
+    cursor: pointer; margin-bottom: 2px;
+    transition: all 0.12s;
+  }
+  .sb-item:hover { background: var(--surface); color: var(--text); }
+  .sb-item.active { background: var(--surface); color: var(--primary); font-weight: 500; }
+  .admin-main { flex: 1; padding: 24px; overflow-x: auto; }
+  .stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .stat-card {
+    background: var(--surface-alt); border-radius: var(--radius);
+    padding: 14px;
+  }
+  .stat-card .label { margin-bottom: 2px; }
+  .stat-card .value { font-size: 22px; font-family: var(--font-display); font-weight: 600; }
+
+  /* === Tab Pills (inside phones) === */
+  .tab-pills { display: flex; gap: 0; margin-bottom: 14px; }
+  .tab-pill {
+    padding: 6px 14px; font-size: 12px;
+    border-bottom: 2px solid transparent;
+    color: var(--text-secondary); cursor: pointer;
+  }
+  .tab-pill.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 500; }
+
+  /* === Bottom Nav === */
+  .bottom-nav {
+    display: flex; justify-content: space-around;
+    padding: 10px 0 6px;
+    border-top: 1px solid var(--border);
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: var(--surface);
+  }
+  .nav-item { font-size: 10px; text-align: center; color: var(--text-tertiary); cursor: pointer; }
+  .nav-item.active { color: var(--primary); font-weight: 500; }
+  .nav-icon { width: 20px; height: 20px; border-radius: 4px; background: var(--surface-alt); margin: 0 auto 3px; }
+
+  /* === Camera Dark Screen === */
+  .camera-bg {
+    background: #111; min-height: 420px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 14px;
+    position: relative;
+  }
+  .face-guide {
+    width: 150px; height: 195px; border-radius: 75px;
+    border: 2px dashed rgba(255,255,255,0.45);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .face-guide span { font-size: 11px; color: rgba(255,255,255,0.4); }
+  .light-badge {
+    padding: 4px 14px; border-radius: var(--radius);
+    font-size: 11px; font-weight: 500;
+  }
+  .light-good { background: rgba(76,175,80,0.15); color: #66BB6A; }
+  .shutter {
+    width: 58px; height: 58px; border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.8);
+    position: absolute; bottom: 20px;
+    cursor: pointer;
+  }
+
+  /* === Slider mock === */
+  .mock-slider {
+    width: 100%; height: 4px;
+    background: var(--surface-alt); border-radius: 2px;
+    position: relative; margin: 8px 0;
+  }
+  .mock-slider-fill {
+    height: 100%; border-radius: 2px; background: var(--primary);
+  }
+  .mock-slider-thumb {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--primary); border: 2px solid var(--surface);
+    position: absolute; top: -5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  }
+
+  /* === Table === */
+  .admin-table { width: 100%; font-size: 12px; border-collapse: collapse; }
+  .admin-table td { padding: 8px 4px; border-bottom: 1px solid var(--border); }
+
+  /* === Bar chart mock === */
+  .bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .bar-label { font-size: 11px; width: 70px; color: var(--text-secondary); text-align: right; flex-shrink: 0; }
+  .bar-track { flex: 1; height: 8px; background: var(--surface-alt); border-radius: 4px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 4px; background: var(--primary); }
+  .bar-val { font-size: 11px; width: 32px; color: var(--text-secondary); font-family: var(--font-mono); }
+
+  /* === Responsive === */
+  @media (max-width: 768px) {
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+    .admin-sidebar { width: 160px; }
+    .content { padding: 20px 16px; }
+  }
+  @media (max-width: 540px) {
+    .admin-layout { flex-direction: column; }
+    .admin-sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); padding: 12px; display: flex; gap: 4px; overflow-x: auto; }
+    .sidebar-logo { display: none; }
+    .sb-item { white-space: nowrap; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="topbar">
+  <div class="topbar-logo">Complexion<span>AI</span> <span style="font-family:var(--font-body);font-size:12px;color:var(--text-tertiary);font-weight:400;margin-left:4px;">wireframes</span></div>
+  <button class="theme-toggle" onclick="toggleTheme()">Toggle dark mode</button>
+</div>
+
+<!-- Navigation -->
+<div class="nav-wrap">
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showScreen('onboarding', this)">Onboarding</button>
+    <button class="nav-tab" onclick="showScreen('home', this)">Home</button>
+    <button class="nav-tab" onclick="showScreen('scan', this)">Scan & analysis</button>
+    <button class="nav-tab" onclick="showScreen('routine', this)">Routine</button>
+    <button class="nav-tab" onclick="showScreen('checkin', this)">Daily check-in</button>
+    <button class="nav-tab" onclick="showScreen('chat', this)">AI Chat</button>
+    <button class="nav-tab" onclick="showScreen('progress', this)">Progress</button>
+    <button class="nav-tab" onclick="showScreen('admin', this)">Admin dashboard</button>
+  </div>
+</div>
+
+<!-- Content -->
+<div class="content">
+
+  <!-- ===== ONBOARDING ===== -->
+  <div id="onboarding" class="screen active">
+    <div class="screen-title">Onboarding flow</div>
+    <div class="screen-subtitle">Welcome → sign up → skin profile questionnaire → first scan prompt</div>
+    <div class="phone-grid">
+
+      <!-- Welcome -->
+      <div>
+        <div class="phone-label">1. Welcome</div>
+        <div class="phone-frame">
+          <div class="phone-status"><span>9:41</span><span>100%</span></div>
+          <div class="phone-screen" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px;">
+            <div style="width:80px;height:80px;border-radius:50%;background:var(--primary-bg);display:flex;align-items:center;justify-content:center;">
+              <span style="font-family:var(--font-display);font-size:32px;color:var(--primary);">S</span>
+            </div>
+            <div>
+              <div style="font-family:var(--font-display);font-size:22px;font-weight:600;">Skin<span style="color:var(--accent);">AI</span></div>
+              <p style="font-size:12px;color:var(--text-secondary);margin-top:4px;padding:0 24px;">Your AI skincare companion. Analyse, track, and transform your skin.</p>
+            </div>
+            <button class="btn btn-primary" style="width:80%;">Get started</button>
+            <p style="font-size:11px;color:var(--text-tertiary);">Already have an account? <span style="color:var(--info);cursor:pointer;">Sign in</span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skin Profile -->
+      <div>
+        <div class="phone-label">2. Skin profile</div>
+        <div class="phone-frame">
+          <div class="phone-status"><span>9:41</span><span>100%</span></div>
+          <div class="phone-title-bar">
+            <span>Skin profile</span>
+            <span style="font-size:11px;color:var(--text-tertiary);">Step 1 of 3</span>
+          </div>
+          <div class="phone-screen">
+            <p style="font-size:13px;font-weight:500;margin-bottom:8px;">What's your skin type?</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:16px;">
+              <div class="chip sel">Oily</div>
+              <div class="chip">Dry</div>
+              <div class="chip">Combination</div>
+              <div class="chip">Normal</div>
+              <div class="chip">Sensitive</div>
+            </div>
+            <p style="font-size:13px;font-weight:500;margin-bottom:8px;">Primary concerns</p>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">
+              <div class="chip sel">Acne</div>
+              <div class="chip sel">Texture</div>
+              <div class="chip">Wrinkles</div>
+              <div class="chip">Dark spots</div>
+              <div class="chip">Redness</div>
+              <div class="chip">Large pores</div>
+              <div class="chip">Dullness</div>
+            </div>
+            <p style="font-size:13px;font-weight:500;margin-bottom:8px;">Age range</p>
+            <div style="display:flex;gap:6px;margin-bottom:20px;">
+              <div class="chip">18-24</div>
+              <div class="chip sel">25-34</div>
+              <div class="chip">35-44</div>
+              <div class="chip">45+</div>
+            </div>
+            <button class="btn btn-primary" style="width:100%;">Continue</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fitzpatrick + Climate -->
+      <div>
+        <div class="phone-label">3. Skin details</div>
+        <div class="phone-frame">
+          <div class="phone-status"><span>9:41</span><span>100%</span></div>
+          <div class="phone-title-bar">
+            <span>Skin profile</span>
+            <span style="font-size:11px;color:var(--text-tertiary);">Step 2 of 3</span>
+          </div>
+          <div class="phone-screen">
+            <p style="font-size:13px;font-weight:500;margin-bottom:8px;">Fitzpatrick skin tone</p>
+            <div style="display:flex;gap:6px;margin-bottom:16px;">
+              <div style="width:36px;height:36px;border-radius:50%;background:#FDEBD0;border:1px solid var(--border);cursor:pointer;"></div>
+              <div style="width:36px;height:36px;border-radius:50%;background:#F5CBA7;border:1px solid var(--border);cursor:pointer;"></div>
+              <div style="width:36px;height:36px;border-radius:50%;background:#D4A574;border:2px solid var(--primary);cursor:pointer;"></div>
+              <div style="width:36px;height:36px;border-radius:50%;background:#A0785A;border:1px solid var(--border);cursor:pointer;"></div>
+              <div style="width:36px;height:36px;border-radius:50%;background:#6B4423;border:1px solid var(--border);cursor:pointer;"></div>
+              <div style="width:36px;height:36px;border-radius:50%;background:#3D2314;border:1px solid var(--border);cursor:pointer;"></div>
+            </div>
+            <p style="font-size:13px;font-weight:500;margin-bottom:8px;">Your climate</p>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">
+              <div class="chip">Tropical</div>
+              <div class="chip">Arid</div>
+              <div class="chip sel">Temperate</div>
+              <div class="chip">Cold</div>
+            </div>
+            <p style="font-size:13px;font-weight:500;margin-bottom:8px;">Known allergies</p>
+            <div style="border:1px solid var(--border);border-radius:var(--radius);padding:8px;font-size:12px;color:var(--text-tertiary);margin-bottom:16px;">Fragrance, essential oils...</div>
+            <p style="font-size:13px;font-weight:500;margin-bottom:8px;">Your goals</p>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;">
+              <div class="chip sel">Clear acne</div>
+              <div class="chip sel">Smooth texture</div>
+              <div class="chip">Anti-ageing</div>
+              <div class="chip">Glow</div>
+            </div>
+            <button class="btn btn-primary" style="width:100%;">Continue</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- First Scan -->
+      <div>
+        <div class="phone-label">4. First scan prompt</div>
+        <div class="phone-frame">
+          <div class="phone-status"><span>9:41</span><span>100%</span></div>
+          <div class="phone-title-bar"><span>Ready to scan</span></div>
+          <div class="phone-screen" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;">
+            <div style="width:130px;height:170px;border-radius:65px;border:2px dashed var(--border-strong);display:flex;align-items:center;justify-content:center;">
+              <span style="font-size:12px;color:var(--text-tertiary);">Face preview</span>
+            </div>
+            <div>
+              <p style="font-size:14px;font-weight:500;">Let's take your first scan</p>
+              <p style="font-size:12px;color:var(--text-secondary);margin-top:4px;">We'll analyse your skin and build a personalised routine</p>
+            </div>
+            <button class="btn btn-primary" style="width:75%;">Open camera</button>
+            <p style="font-size:11px;color:var(--text-tertiary);cursor:pointer;">Skip for now</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== HOME ===== -->
+  <div id="home" class="screen">
+    <div class="screen-title">Home dashboard</div>
+    <div class="screen-subtitle">Daily hub — score overview, routine progress, AI tip, quick actions</div>
+    <div class="phone-grid">
+      <div>
+        <div class="phone-label">Home screen</div>
+        <div class="phone-frame">
+          <div class="phone-status"><span>9:41</span><span>100%</span></div>
+          <div class="phone-screen" style="padding-bottom:60px;">
+            <!-- Header -->
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+              <div>
+                <p style="font-size:15px;font-weight:500;">Good morning, Mike</p>
+                <p style="font-size:11px;color:var(--text-secondary);">Day 12 streak 🔥</p>
+              </div>
+              <div class="avatar">M</div>
+            </div>
+            <!-- Score Card -->
+            <div class="card">
+              <div class="label">Skin health score</div>
+              <div style="display:flex;align-items:baseline;gap:8px;">
+                <span class="big-value" style="color:var(--primary);">74</span>
+                <span class="badge badge-success">+3 this week</span>
+              </div>
+              <div style="display:flex;gap:6px;margin-top:10px;">
+                <span class="badge badge-neutral">Acne 68</span>
+                <span class="badge badge-neutral">Texture 72</span>
+                <span class="badge badge-neutral">Hydration 81</span>
+              </div>
+            </div>
+            <!-- Routine Progress -->
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                <span class="label" style="margin:0;">AM routine</span>
+                <span style="font-size:11px;color:var(--primary);font-weight:500;">4/6 steps</span>
+              </div>
+              <div class="progress-track"><div class="progress-fill" style="width:66%;"></div></div>
+              <button class="btn btn-outline" style="width:100%;margin-top:10px;font-size:12px;">Continue routine</button>
+            </div>
+            <!-- AI Tip -->
+            <div class="card" style="border-left:3px solid var(--accent);">
+              <div class="label">AI daily tip</div>
+              <p style="font-size:12px;line-height:1.6;">Your hydration improved 8% this week — keep using the HA serum in your PM routine. Consider adding a weekly exfoliant for texture.</p>
+            </div>
+            <!-- Quick Actions -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+              <button class="btn btn-primary" style="font-size:12px;">New scan</button>
+              <button class="btn btn-outline" style="font-size:12px;">Check in</button>
+            </div>
+            <!-- Bottom Nav -->
+            <div class="bottom-nav">
+              <div class="nav-item active"><div class="nav-icon"></div>Home</div>
+              <div class="nav-item"><div class="nav-icon"></div>Scan</div>
+              <div class="nav-item"><div class="nav-icon"></div>Routine</div>
+              <div class="nav-item"><div class="nav-icon"></div>Chat</div>
+              <div class="nav-item"><div class="nav-icon"></div>Profile</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SCAN & ANALYSIS ===== -->
+  <div id="scan" class="screen">
+    <div class="screen-title">Scan & analysis</div>
+    <div class="screen-subtitle">Camera capture → AI processing → scored results with summary</div>
+    <div class="phone-grid">
+      <!-- Camera -->
+      <div>
+        <div class="phone-label">Camera capture</div>
+        <div class="phone-frame">
+          <div class="phone-status" style="background:#111;color:rgba(255,255,255,0.6);"><span>9:41</span><span>100%</span></div>
+          <div class="camera-bg">
+            <div class="face-guide"><span>Align face here</span></div>
+            <div class="light-badge light-good">Good lighting ✓</div>
+            <div class="shutter"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Processing -->
+      <div>
+        <div class="phone-label">Processing</div>
+        <div class="phone-frame">
+          <div class="phone-status"><span>9:41</span><span>100%</span></div>
+          <div class="phone-screen" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px;">
+            <div style="width:70px;height:70px;border-radius:50%;border:3px solid var(--primary);border-top-color:transparent;animation:spin 1s linear infinite;"></div>
+            <div>
+              <p style="font-size:14px;font-weight:500;">Analysing your skin...</p>
+              <p style="font-size:12px;color:var(--text-secondary);margin-top:4px;">Checking texture, pores, hydration levels</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Results -->
+      <div>
+        <div class="phone-label">Analysis results</div>
+        <div class="phone-frame">
+          <div class="phone-status"><span>9:41</span><span>100%</span></div>
+          <div class="phone-title-bar"><span>Results</span><span style="font-size:11px;color:var(--text-tertiary);">23 Mar 2026</span></div>
+          <div class="phone-screen">
+            <div style="text-align:center;margin-bottom:14px;">
+              <div class="label">Overall score</div>
+              <div class="score-ring"><span class="big-value">74</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:14px;">
+              <div class="card" style="display:flex;justify-content:space-between;align-items:center;margin:0;padding:8px 10px;">
+                <span style="font-size:11px;color:var(--text-secondary);">Acne</span>
+                <span style="font-size:14px;font-weight:500;">68</span>
+              </div>
+              <div class="card" style="display:flex;justify-content:space-between;align-items:center;margin:0;padding:8px 10px;">
+                <span style="font-size:11px;color:var(--text-secondary);">Texture</span>
+                <span style="font-size:14px;font-weight:500;">72</span>
+              </div>
+              <div class="card" style="display:flex;justify-content:space-between;align-items:center;margin:0;padding:8px 10px;">
+                <span style="font-size:11px;color:var(--text-secondary);">Hydration</span>
+                <span style="font-size:14px;font-weight:500;">81</span>
+              </div>
+              <div class="card" style="display:flex;justify-content:space-between;align-items:center;margin:0;padding:8px 10px;">
+                <span style="font-size:11px;color:var(--text-secondary);">Pores</span>
+                <span style="font-size:14px;font-weight:500;">65</span>
+              </div>
+              <div class="card" style="display:flex;justify-content:space-between;align-items:center;margin:0;padding:8px 10px;">
+                <span style="font-size:11px;color:var(--text-secondary);">Pigmentation</span>
+                <span style="font-size:14px;font-weight:500;">78</span>
+              </div>
+              <div class="card" style="display:flex;justify-content:space-between;align-items:center;margin:0;padding:8px 10px;">
+                <span style="font-size:11px;color:var(--text-secondary);">Redness</span>
+                <span style="font-size:14px;font-weight:500;">70</span>
+              </div>
+            </div>
+            <div class="card" style="border-left:3px solid var(--primary);">
+              <div class="label">AI summary</div>
+              <p style="font-size:12px;line-height:1.6;">Good overall shape. Mild congestion around the T-zone and slightly dehydrated cheeks. Texture has improved since last scan. Focus on hydration and gentle exfoliation.</p>
+            </div>
+            <button class="btn btn-primary" style="width:100%;">Build my routine</button>
+            <button class="btn btn-outline" style="width:100%;margin-top:8px;">Compare with previous</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ROUTINE ===== -->
+  <div id="routine" class="screen">
+    <div class="screen-title">Routine builder</div>
+    <div class="screen-subtitle">AI-generated AM/PM routines with product recommendations and affiliate links</div>
+    <div class="phone-grid">
+      <!-- Routine List -->
+      <div>
+        <div class="phone-label">Morning routine</div>
+        <div class="phone-frame">
+          <div class="phone-status"><span>9:41</span><span>100%</span></div>
+          <div class="phone-title-bar"><span>My routine</span></div>
+          <div class="phone-screen">
+            <div class="tab-pills">
+              <div class="tab-pill active">Morning</div>
+              <div class="tab-pill">Evening</div>
+              <div class="tab-pill">Weekly</div>
+            </div>
+            <div class="step-row">
+              <div class="step-check done"></div>
+              <div style="flex:1;">
+                <p style="font-size:13px;font-weight:500;">Gentle cleanser</p>
+                <p style="font-size:11px;color:var(--text-secondary);">CeraVe Hydrating Cleanser</p>
+              </div>
+              <span style="font-size:11px;color:var(--text-tertiary);">60s</span>
+            </div>
+            <div class="step-row">
+              <div class="step-check done"></div>
+              <div style="flex:1;">
+                <p style="font-size:13px;font-weight:500;">Vitamin C serum</p>
+                <p style="font-size:11px;color:var(--text-secondary);">The Ordinary Vit C 23%</p>
+              </div>
+              <span style="font-size:11px;color:var(--text-tertiary);">30s</span>
+            </div>
+            <div class="step-row">
+              <div class="step-check"></div>
+              <div style="flex:1;">
+                <p style="font-size:13px;font-weight:500;">Moisturiser</p>
+                <p style="font-size:11px;color:var(--text-secondary);">La Roche-Posay Toleriane</p>
+              </div>
+              <span style="font-size:11px;color:var(--text-tertiary);">30s</span>
+            </div>
+            <div class="step-row">
+              <div class="step-check"></div>
+              <div style="flex:1;">
+                <p style="font-size:13px;font-weight:500;">Sunscreen SPF50+</p>
+                <p style="font-size:11px;color:var(--text-secondary);">Cancer Council Face Day Wear</p>
+              </div>
+              <span style="font-size:11px;color:var(--text-tertiary);">30s</span>
+            </div>
+            <div class="divider"></div>
+            <div class="card" style="border-left:3px solid var(--accent);">
+              <div class="label">Why this routine?</div>
+              <p style="font-size:11px;line-height:1.6;">Vit C targets your pigmentation while HA in the moisturiser addresses dehydrated cheeks. SPF is non-negotiable for Vit C use.</p>
+            </div>
+            <button class="btn btn-outline" style="width:100%;font-size:12px;">Regenerate routine</button>
+          </div>
+        </div>
+      </div>
+      <!-- Product Detail -->
+      <div>
+        <div class="phone-label">Product detail</div>
+        <div class="phone-frame">
+          <div class="phone-status"><span>9:41</span><span>100%</span></div>
+          <div class="phone-title-bar"><span style="font-size:11px;color:var(--text-tertiary);">← Back</span></div>
+          <div class="phone-screen">
+            <div style="width:100%;height:110px;background:var(--surface-alt);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;margin-bottom:14px;">
+              <span style="font-size:12px;color:var(--text-tertiary);">Product image</span>
+            </div>
+            <p style="font-size:16px;font-weight:500;">The Ordinary Vitamin C 23%</p>
+            <p style="font-size:12px;color:var(--text-secondary);margin:2px 0 10px;">The Ordinary — $18.90 AUD</p>
+            <div style="display:flex;gap:6px;margin-bottom:14px;">
+              <span class="badge badge-success">92% AI match</span>
+              <span class="badge badge-primary">Targets pigmentation</span>
+            </div>
+            <div class="divider"></div>
+            <div class="label">Key ingredients</div>
+            <p style="font-size:12px;margin-bottom:12px;">L-Ascorbic Acid 23%, Squalane, HA crosspolymer</p>
+            <div class="label">AI compatibility note</div>
+            <div class="card" style="border-left:3px solid var(--success);">
+              <p style="font-size:12px;line-height:1.6;">Excellent match for your combination skin. The squalane base won't clog your T-zone pores. Apply before moisturiser in AM routine.</p>
+            </div>
+            <button class="btn btn-accent" style="width:100%;">Buy — Adore Beauty</button>
+            <button class="btn btn-outline" style="width:100%;margin-top:8px;font-size:12px;">See alternatives</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== DAILY CHECK-IN ===== -->
+  <div id="checkin" class="screen">
+    <div class="screen-title">Daily check-in</div>
+    <div class="screen-subtitle">Quick 30-second daily log — mood, routine completion, lifestyle factors</div>
+    <div class="phone-grid">
+      <div>
+        <div class="phone-label">Check-in form</div>
+        <div class="phone-frame">
+          <div class="phone-status"><span>9:41</span><span>100%</span></div>
+          <div class="phone-title-bar"><span>Daily check-in</span><span style="font-size:11px;color:var(--text-tertiary);">23 Mar</span></div>
+          <div class="phone-screen">
+            <p style="font-size:13px;font-weight:500;margin-bottom:10px;">How's your skin today?</p>
+            <div class="emoji-row" style="margin-bottom:18px;">
+              <div class="emoji-circle">😫</div>
+              <div class="emoji-circle">😕</div>
+              <div class="emoji-circle sel">😐</div>
+              <div class="emoji-circle">🙂</div>
+              <div class="emoji-circle">😊</div>
+            </div>
+            <p style="font-size:13px;font-weight:500;margin-bottom:8px;">Routine completed?</p>
+            <div style="display:flex;gap:6px;margin-bottom:18px;">
+              <div class="chip sel">All steps</div>
+              <div class="chip">Partial</div>
+              <div class="chip">Skipped</div>
+            </div>
+            <p style="font-size:13px;font-weight:500;margin-bottom:10px;">Lifestyle factors</p>
+            <div style="margin-bottom:12px;">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);margin-bottom:4px;">
+                <span>Sleep</span><span style="font-family:var(--font-mono);">7.5 hrs</span>
+              </div>
+              <div class="mock-slider"><div class="mock-slider-fill" style="width:63%;"></div><div class="mock-slider-thumb" style="left:calc(63% - 7px);"></div></div>
+            </div>
+            <div style="margin-bottom:12px;">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);margin-bottom:4px;">
+                <span>Water intake</span><span style="font-family:var(--font-mono);">2.0 L</span>
+              </div>
+              <div class="mock-slider"><div class="mock-slider-fill" style="width:40%;"></div><div class="mock-slider-thumb" style="left:calc(40% - 7px);"></div></div>
+            </div>
+            <div style="margin-bottom:14px;">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);margin-bottom:4px;">
+                <span>Stress level</span><span style="font-family:var(--font-mono);">Low</span>
+              </div>
+              <div class="mock-slider"><div class="mock-slider-fill" style="width:25%;"></div><div class="mock-slider-thumb" style="left:calc(25% - 7px);"></div></div>
+            </div>
+            <div style="border:1px solid var(--border);border-radius:var(--radius);padding:10px;font-size:12px;color:var(--text-tertiary);margin-bottom:14px;">Any notes? (optional)</div>
+            <button class="btn btn-primary" style="width:100%;">Submit check-in</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Post check-in insight -->
+      <div>
+        <div class="phone-label">AI insight (post check-in)</div>
+        <div class="phone-frame">
+          <div class="phone-status"><span>9:41</span><span>100%</span></div>
+          <div class="phone-title-bar"><span>Today's insight</span></div>
+          <div class="phone-screen" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;">
+            <div style="width:60px;height:60px;border-radius:50%;background:var(--success-bg);display:flex;align-items:center;justify-content:center;">
+              <span style="font-size:20px;color:var(--success);font-weight:500;">✓</span>
+            </div>
+            <p style="font-size:14px;font-weight:500;">Check-in complete!</p>
+            <div class="card" style="text-align:left;border-left:3px solid var(--accent);width:100%;">
+              <div class="label">AI personalised tip</div>
+              <p style="font-size:12px;line-height:1.6;">Good sleep last night — that helps skin repair. Your hydration is trending up since you started drinking 2L+ daily. Keep it up and consider adding a hydrating mask this weekend.</p>
+            </div>
+            <button class="btn btn-outline" style="width:80%;font-size:12px;">View progress</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== AI CHAT ===== -->
+  <div id="chat" class="screen">
+    <div class="screen-title">AI skin advisor</div>
+    <div class="screen-subtitle">Context-aware chat with access to profile, analysis, routine, and product catalogue</div>
+    <div class="phone-grid">
+      <div>
+        <div class="phone-label">Chat conversation</div>
+        <div class="phone-frame">
+          <div class="phone-status"><span>9:41</span><span>100%</span></div>
+          <div class="phone-title-bar"><span>AI Skin Advisor</span><span class="badge badge-primary">Context-aware</span></div>
+          <div class="phone-screen" style="display:flex;flex-direction:column;justify-content:space-between;">
+            <div>
+              <div class="bubble bubble-ai">Hi Mike! I can see your latest scan from today — your hydration is up, great work. What can I help with?</div>
+              <div style="display:flex;flex-wrap:wrap;gap:4px;margin:6px 0 10px;">
+                <div class="chip" style="font-size:10px;">Why am I breaking out?</div>
+                <div class="chip" style="font-size:10px;">Retinol + Vit C?</div>
+                <div class="chip" style="font-size:10px;">Budget alternatives</div>
+                <div class="chip" style="font-size:10px;">What SPF for me?</div>
+              </div>
+              <div class="bubble bubble-user">Can I use retinol and vitamin C together in the same routine?</div>
+              <div class="bubble bubble-ai">Best to separate them — Vit C in the morning for antioxidant protection, retinol at night for cell turnover. Using both simultaneously can irritate your T-zone. I've already set your routine up this way.<br><br>Want me to adjust your evening routine to add retinol?</div>
+              <div class="bubble bubble-user">Yes, recommend a retinol for sensitive combo skin</div>
+              <div class="bubble bubble-ai">For your skin type, I'd suggest <span style="color:var(--primary);font-weight:500;">The Ordinary Retinol 0.2% in Squalane</span> ($9.80 AUD). It's a gentle starting dose — squalane base suits combo skin without clogging. Start 2x/week, build to nightly.<br><br><span style="font-size:10px;color:var(--text-tertiary);">⚠️ Always use SPF the next morning</span></div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:10px;">
+              <div style="flex:1;border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;font-size:12px;color:var(--text-tertiary);">Ask about your skin...</div>
+              <button class="btn btn-primary" style="padding:8px 16px;font-size:12px;">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PROGRESS ===== -->
+  <div id="progress" class="screen">
+    <div class="screen-title">Progress tracking</div>
+    <div class="screen-subtitle">Timeline, before/after comparison, trend charts with AI insights</div>
+    <div class="phone-grid">
+      <!-- Timeline -->
+      <div>
+        <div class="phone-label">Timeline view</div>
+        <div class="phone-frame">
+          <div class="phone-status"><span>9:41</span><span>100%</span></div>
+          <div class="phone-title-bar"><span>Progress</span></div>
+          <div class="phone-screen">
+            <div class="tab-pills">
+              <div class="tab-pill active">Timeline</div>
+              <div class="tab-pill">Before/after</div>
+              <div class="tab-pill">Trends</div>
+            </div>
+            <div style="text-align:center;margin-bottom:14px;">
+              <span class="big-value" style="color:var(--primary);">12</span>
+              <p style="font-size:11px;color:var(--text-secondary);">day streak</p>
+            </div>
+            <div class="tl-entry">
+              <div class="tl-dot" style="background:var(--success);"></div>
+              <div>
+                <p style="font-size:12px;font-weight:500;">Today — Score 74</p>
+                <p style="font-size:11px;color:var(--text-secondary);">Feeling good, routine complete</p>
+              </div>
+            </div>
+            <div class="tl-entry">
+              <div class="tl-dot" style="background:var(--success);"></div>
+              <div>
+                <p style="font-size:12px;font-weight:500;">Yesterday — Score 72</p>
+                <p style="font-size:11px;color:var(--text-secondary);">Okay, partial routine</p>
+              </div>
+            </div>
+            <div class="tl-entry">
+              <div class="tl-dot" style="background:var(--info);"></div>
+              <div>
+                <p style="font-size:12px;font-weight:500;">2 days ago — New scan</p>
+                <p style="font-size:11px;color:var(--text-secondary);">Acne improved +5, pores -2</p>
+              </div>
+            </div>
+            <div class="tl-entry">
+              <div class="tl-dot" style="background:var(--success);"></div>
+              <div>
+                <p style="font-size:12px;font-weight:500;">3 days ago</p>
+                <p style="font-size:11px;color:var(--text-secondary);">Feeling great, full routine</p>
+              </div>
+            </div>
+            <div class="tl-entry">
+              <div class="tl-dot" style="background:var(--warning);"></div>
+              <div>
+                <p style="font-size:12px;font-weight:500;">4 days ago</p>
+                <p style="font-size:11px;color:var(--text-secondary);">Bad skin day, skipped routine</p>
+              </div>
+            </div>
+            <div class="card" style="border-left:3px solid var(--accent);margin-top:14px;">
+              <div class="label">AI trend insight</div>
+              <p style="font-size:12px;line-height:1.6;">Hydration up 15% over 2 weeks since starting HA serum. Acne improves on days with 7+ hours sleep — try to maintain that pattern.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Before/After -->
+      <div>
+        <div class="phone-label">Before / after comparison</div>
+        <div class="phone-frame">
+          <div class="phone-status"><span>9:41</span><span>100%</span></div>
+          <div class="phone-title-bar"><span>Compare</span></div>
+          <div class="phone-screen">
+            <div style="display:flex;gap:8px;margin-bottom:14px;">
+              <div style="flex:1;height:160px;background:var(--surface-alt);border-radius:var(--radius);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;">
+                <span style="font-size:11px;color:var(--text-tertiary);">Before photo</span>
+                <span style="font-size:10px;color:var(--text-tertiary);">9 Mar 2026</span>
+              </div>
+              <div style="flex:1;height:160px;background:var(--surface-alt);border-radius:var(--radius);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;">
+                <span style="font-size:11px;color:var(--text-tertiary);">After photo</span>
+                <span style="font-size:10px;color:var(--text-tertiary);">23 Mar 2026</span>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:center;gap:8px;margin-bottom:14px;">
+              <span class="badge badge-success">Acne +8</span>
+              <span class="badge badge-success">Hydration +12</span>
+              <span class="badge badge-warning">Pores -1</span>
+            </div>
+            <div class="card">
+              <div class="label">Score comparison</div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;">
+                <span style="font-size:12px;">Overall</span>
+                <span style="font-size:12px;"><span style="color:var(--text-tertiary);">67</span> → <span style="font-weight:500;">74</span></span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;">
+                <span style="font-size:12px;">Acne</span>
+                <span style="font-size:12px;"><span style="color:var(--text-tertiary);">60</span> → <span style="font-weight:500;">68</span></span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;">
+                <span style="font-size:12px;">Hydration</span>
+                <span style="font-size:12px;"><span style="color:var(--text-tertiary);">69</span> → <span style="font-weight:500;">81</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ADMIN DASHBOARD ===== -->
+  <div id="admin" class="screen">
+    <div class="screen-title">Admin dashboard</div>
+    <div class="screen-subtitle">Backend management — users, products, AI config, analytics</div>
+    <div class="admin-layout">
+      <div class="admin-sidebar">
+        <div class="sidebar-logo">Skin<span style="color:var(--accent);">AI</span> Admin</div>
+        <div class="sb-item active">Dashboard</div>
+        <div class="sb-item">Users</div>
+        <div class="sb-item">Products</div>
+        <div class="sb-item">Routine templates</div>
+        <div class="sb-item">AI config</div>
+        <div class="sb-item">Content</div>
+        <div class="sb-item">Analytics</div>
+        <div class="sb-item">Settings</div>
+      </div>
+      <div class="admin-main">
+        <p style="font-size:18px;font-weight:500;margin-bottom:20px;">Dashboard overview</p>
+
+        <!-- Stats -->
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="label">Total users</div>
+            <div class="value" style="font-family:var(--font-display);font-size:22px;">12,847</div>
+            <span class="badge badge-success" style="margin-top:6px;display:inline-block;">+342 this week</span>
+          </div>
+          <div class="stat-card">
+            <div class="label">Active daily (DAU)</div>
+            <div class="value" style="font-family:var(--font-display);font-size:22px;">3,421</div>
+            <span style="font-size:11px;color:var(--text-secondary);">26.6% of total</span>
+          </div>
+          <div class="stat-card">
+            <div class="label">Analyses today</div>
+            <div class="value" style="font-family:var(--font-display);font-size:22px;">891</div>
+            <span class="badge badge-info" style="margin-top:6px;display:inline-block;">AI pipeline healthy</span>
+          </div>
+          <div class="stat-card">
+            <div class="label">Monthly recurring (MRR)</div>
+            <div class="value" style="font-family:var(--font-display);font-size:22px;">$48.2K</div>
+            <span class="badge badge-success" style="margin-top:6px;display:inline-block;">+12% MoM</span>
+          </div>
+        </div>
+
+        <!-- Two Column -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;">
+          <!-- Recent Users -->
+          <div>
+            <p style="font-size:14px;font-weight:500;margin-bottom:12px;">Recent signups</p>
+            <table class="admin-table">
+              <tr>
+                <td>sarah.j@gmail.com</td>
+                <td style="text-align:right;"><span class="badge badge-info">Premium</span></td>
+              </tr>
+              <tr>
+                <td>mike.t@outlook.com</td>
+                <td style="text-align:right;"><span class="badge badge-neutral">Free</span></td>
+              </tr>
+              <tr>
+                <td>emma.w@yahoo.com</td>
+                <td style="text-align:right;"><span class="badge badge-success">Pro</span></td>
+              </tr>
+              <tr>
+                <td>alex.k@proton.me</td>
+                <td style="text-align:right;"><span class="badge badge-info">Premium</span></td>
+              </tr>
+              <tr>
+                <td>luna.c@icloud.com</td>
+                <td style="text-align:right;"><span class="badge badge-neutral">Free</span></td>
+              </tr>
+            </table>
+          </div>
+          <!-- Top Concerns -->
+          <div>
+            <p style="font-size:14px;font-weight:500;margin-bottom:12px;">Top user concerns</p>
+            <div class="bar-row">
+              <div class="bar-label">Acne</div>
+              <div class="bar-track"><div class="bar-fill" style="width:42%;"></div></div>
+              <div class="bar-val">42%</div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Texture</div>
+              <div class="bar-track"><div class="bar-fill" style="width:31%;"></div></div>
+              <div class="bar-val">31%</div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Wrinkles</div>
+              <div class="bar-track"><div class="bar-fill" style="width:18%;"></div></div>
+              <div class="bar-val">18%</div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Dark spots</div>
+              <div class="bar-track"><div class="bar-fill" style="width:15%;"></div></div>
+              <div class="bar-val">15%</div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Redness</div>
+              <div class="bar-track"><div class="bar-fill" style="width:12%;"></div></div>
+              <div class="bar-val">12%</div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Pores</div>
+              <div class="bar-track"><div class="bar-fill" style="width:10%;"></div></div>
+              <div class="bar-val">10%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Config -->
+        <p style="font-size:14px;font-weight:500;margin-bottom:12px;">AI configuration</p>
+        <div style="background:var(--surface-alt);border-radius:var(--radius);padding:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);">
+            <span style="font-size:13px;">Analysis model</span>
+            <span style="font-size:12px;font-family:var(--font-mono);color:var(--text-secondary);">claude-sonnet-4-20250514</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);">
+            <span style="font-size:13px;">Chat system prompt</span>
+            <span style="font-size:12px;color:var(--info);cursor:pointer;">Edit prompt</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);">
+            <span style="font-size:13px;">Routine generation prompt</span>
+            <span style="font-size:12px;color:var(--info);cursor:pointer;">Edit prompt</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);">
+            <span style="font-size:13px;">Concern alert threshold</span>
+            <span style="font-size:12px;font-family:var(--font-mono);color:var(--text-secondary);">Score < 40</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;">
+            <span style="font-size:13px;">A/B test status</span>
+            <span class="badge badge-success">2 active tests</span>
+          </div>
+        </div>
+
+        <!-- Subscription Breakdown -->
+        <p style="font-size:14px;font-weight:500;margin:24px 0 12px;">Subscription breakdown</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+          <div class="stat-card">
+            <div class="label">Free tier</div>
+            <div class="value" style="font-size:18px;">8,912</div>
+            <span style="font-size:11px;color:var(--text-secondary);">69.4%</span>
+          </div>
+          <div class="stat-card">
+            <div class="label">Premium ($9.99/mo)</div>
+            <div class="value" style="font-size:18px;">2,847</div>
+            <span style="font-size:11px;color:var(--text-secondary);">22.2%</span>
+          </div>
+          <div class="stat-card">
+            <div class="label">Pro ($19.99/mo)</div>
+            <div class="value" style="font-size:18px;">1,088</div>
+            <span style="font-size:11px;color:var(--text-secondary);">8.5%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function showScreen(id, tab) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    if (tab) tab.classList.add('active');
+  }
+
+  function toggleTheme() {
+    const body = document.body;
+    if (body.getAttribute('data-theme') === 'dark') {
+      body.removeAttribute('data-theme');
+    } else {
+      body.setAttribute('data-theme', 'dark');
+    }
+  }
+</script>
+
+<style>
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+
+</body>
+</html>

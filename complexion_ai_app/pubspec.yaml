@@ -1,0 +1,78 @@
+name: complexion_ai
+description: "AI-Powered Skincare Analysis & Routine Builder"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.3
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+
+  # State Management
+  flutter_bloc: ^8.1.0
+  equatable: ^2.0.5
+
+  # Routing
+  go_router: ^14.0.0
+
+  # DI
+  get_it: ^7.6.0
+  injectable: ^2.3.0
+
+  # Network
+  dio: ^5.4.0
+
+  # Supabase
+  supabase_flutter: ^2.3.0
+
+  # Camera
+  camera: ^0.11.0
+
+  # Image Processing
+  image: ^4.1.0
+  google_mlkit_face_detection: ^0.11.0
+
+  # UI
+  fl_chart: ^0.68.0
+  cached_network_image: ^3.3.0
+  shimmer: ^3.0.0
+
+  # Storage
+  shared_preferences: ^2.2.0
+  flutter_secure_storage: ^9.0.0
+
+  # Notifications
+  flutter_local_notifications: ^17.0.0
+
+  # Utils
+  intl: ^0.19.0
+  uuid: ^4.3.0
+  json_annotation: ^4.8.0
+
+  # Fonts
+  google_fonts: ^6.1.0
+
+  # Environment
+  flutter_dotenv: ^5.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  build_runner: ^2.4.0
+  json_serializable: ^6.7.0
+  injectable_generator: ^2.4.0
+  bloc_test: ^9.1.0
+  mocktail: ^1.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - .env
+
+  # Fonts loaded via google_fonts package at runtime
+  # To bundle locally, add TTF files to assets/fonts/ and uncomment the fonts section
