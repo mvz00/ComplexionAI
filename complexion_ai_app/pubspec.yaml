@@ -55,8 +55,6 @@ dependencies:
   # Fonts
   google_fonts: ^6.1.0
 
-  # Environment
-  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
   flutter_test:
@@ -70,9 +68,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
-  assets:
-    - .env
 
   # Fonts loaded via google_fonts package at runtime
   # To bundle locally, add TTF files to assets/fonts/ and uncomment the fonts section
