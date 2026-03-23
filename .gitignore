@@ -14,8 +14,8 @@ var/
 sdist/
 wheels/
 .installed.cfg
-lib/
-lib64/
+/lib/
+/lib64/
 venv/
 .venv/
 env/
