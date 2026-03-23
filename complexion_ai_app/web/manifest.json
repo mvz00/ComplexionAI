@@ -1,14 +1,19 @@
 {
-    "name": "complexion_ai",
-    "short_name": "complexion_ai",
+    "name": "ComplexionAI",
+    "short_name": "ComplexionAI",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#1A1A2E",
+    "theme_color": "#1A1A2E",
+    "description": "AI-powered skincare analysis and personalised routine builder.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
+        {
+            "src": "favicon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+        },
         {
             "src": "icons/Icon-192.png",
             "sizes": "192x192",
